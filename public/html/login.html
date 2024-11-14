@@ -1,0 +1,66 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+<link href="../css/loginCss.css" rel="stylesheet" id="style-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<body>
+  <div class="wrapper fadeInDown">
+    <div id="formContent">
+      <!-- Tabs Titles -->
+  
+      <!-- Icon -->
+      <div class="fadeIn first">
+        <h1>Wallet Login</h1>
+      </div>
+  
+      <!-- Login Form -->
+      <form id="loginForm">
+        <input type="text" class="fadeIn second" id="email" name="email" placeholder="Email">
+        <input type="password" class="fadeIn third" id="password" name="password" placeholder="Password"> </br>
+        <button type="submit" class="fadeIn fourth">Log In</button>
+      </form>
+  
+      <!-- Remind Passowrd -->
+      <div id="formFooter">
+        <a class="underlineHover" href="#">Forgot Password?</a>
+      </div>
+  
+    </div>
+  </div>
+</body>
+
+<script>
+
+  // Function to clear the session every time the page loads
+  async function clearSession() {
+      await fetch('/clear-session', { method: 'GET' });
+      console.log('Session cleared');
+  }
+
+  // Call clearSession when the page loads
+   window.onload = clearSession;
+
+  document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+  
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+  
+      const response = await fetch('/js/function', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, password })
+      });
+  
+      const data = await response.json();
+      if (response.ok) {
+        window.location.href = '/html/linkWallet.html'; // Redirect to linkWallet.html
+      } else {
+          alert(data.message);  // Show error message if login fails
+      }
+  });
+  </script>

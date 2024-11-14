@@ -1,71 +1,53 @@
 const express = require("express");
 const path = require("path");
-const app = express();
-
+const expressSession = require('express-session');
+const authRoutes = require('./js/authRoutes');   
 const connectToDatabase = require("./js/dbConnection.js");
 
-app.get("/css/styles1.css", (req, res) => {
-    res.type('.css');
-    res.sendFile(path.join(__dirname + "/css/styles1.css"));
-})
+const app = express();
 
-app.get("/css/styles2.css", (req, res) => {
-    res.type('.css');
-    res.sendFile(path.join(__dirname + "/css/styles2.css"));
-})
+// Middleware to parse JSON data
+app.use(express.json());
 
-app.get("/js/scripts.js", (req, res) => {
-    res.type('.js');
-    res.sendFile(path.join(__dirname + "/scripts.js"));
-})
+// Session middleware (Ensure this is added before defining routes)
+app.use(expressSession({
+    secret: 'your_secret_key',  // Change to a more secure key for production
+    resave: false,
+    saveUninitialized: true,
+    cookie: { 
+        secure: false // Use 'secure: true' in production if using HTTPS
+    }
+}));
 
-//FYP page _______________________________________________________________________________________________
+// Route to clear session
+app.get('/clear-session', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Error clearing session:', err);
+            return res.status(500).send("Failed to clear session");
+        }
+        console.log('Session cleared successfully');
+        res.send({ message: "Session cleared" });
+    });
+});
 
-app.get("/css/loginCss.css", (req, res) => {
-    res.type('.css');
-    res.sendFile(path.join(__dirname + "/css/loginCss.css"));
-})
+// Serve static files from the 'public' folder (CSS, JS, HTML, etc.)
+app.use(express.static(path.join(__dirname, 'public')));  
 
-app.get("/css/Wallet.css", (req, res) => {
-    res.type('.css');
-    res.sendFile(path.join(__dirname + "/css/Wallet.css"));
-})
+// Authentication-related routes (login)
+app.use(authRoutes);
 
-app.get("/login.html", (req, res) => {
-    res.sendFile(path.join(__dirname + "/login.html"));
-})
-
-app.get("/linkWallet.html", (req, res) => {
-    res.sendFile(path.join(__dirname + "/linkWallet.html"));
-})
-
-app.get("/viewCV.html", (req, res) => {
-    res.sendFile(path.join(__dirname + "/viewCV.html"));
-})
-
-app.get("/viewConfirmation.html", (req, res) => {
-    res.sendFile(path.join(__dirname + "/viewConfirmation.html"));
-})
-
-app.get("/updateCV.html", (req, res) => {
-    res.sendFile(path.join(__dirname + "/updateCV.html"));
-})
-
-app.get("/updateConfirmation.html", (req, res) => {
-    res.sendFile(path.join(__dirname + "/updateConfirmation.html"));
-})
-
-app.get("/updateSuccessful.html", (req, res) => {
-    res.sendFile(path.join(__dirname + "/updateSuccessful.html"));
-})
-
+// Connect to the database
 connectToDatabase();
 
-const server = app.listen(5000);
-const portNumber = server.address().port;
-console.log(`port is open on ${portNumber}`);
+// Error handling middleware (optional but recommended)
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ message: 'Something went wrong!' });
+});
 
-app.get("/js/contract.js", (req, res) => {
-    res.type('.js');
-    res.sendFile(path.join(__dirname + "/js/contract.js"));
-})
+// Start the server
+const server = app.listen(5000, () => {
+    const portNumber = server.address().port;
+    console.log(`Server running on port ${portNumber}`);
+});
