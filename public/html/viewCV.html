@@ -7,46 +7,50 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="../css/wallet.css" rel="stylesheet" id="style-css">
-   
 </head>
 <body>
-        <div class="container">
-            <div class="header">
-                <i class="bi bi-arrow-left back-icon"></i>
-                <span>Scan</span>
-                <span></span>
+    <div class="container">
+        <div class="header">
+            <i class="bi bi-arrow-left back-icon"></i>
+            <span>Scan</span>
+            <span></span>
+        </div>
+        <div class="content">
+            <div id="statusMessage" class="question-box">
+                <h1>View Blockchain CV</h1>
+                <div id="status">Loading...</div>
+                <div id="credentials"></div> 
             </div>
-            <div class="content">
-                <div class="question-box">
-                    <div class="question-text">No uploaded Bloackchain CV</div>
-        
-                    <div class="buttons">
-                        <button class="button" onclick="window.location.href='updateCV.html'">Upload Blockchain CV</button>
-                    </div>
-                </div>
-            </div>
-            <div class="navbar">
-                <a href="viewCV.html" class="nav-item">
-                    <span class="icon">📄</span>
-                    <span class="label">Blockchain CV</span>
-                </a>
-                <a href="viewConfirmation.html" class="nav-item">
-                    <span class="icon">🔍</span>
-                    <span class="label">Scan</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <span class="icon">👤</span>
-                    <span class="label">Account</span>
-                </a>
-                <a href="login.html" class="nav-item">
-                    <span class="icon">⚙️</span>
-                    <span class="label">log out</span>
-                </a>
+            <div class="buttons">
+                <button class="button" onclick="window.location.href='updateCV.html'">Upload Blockchain CV</button>
             </div>
         </div>
-    <script src="https://cdn.jsdelivr.net/npm/ethers/dist/ethers.min.js"></script>
+        <div class="navbar">
+            <a href="viewCV.html" class="nav-item">
+                <span class="icon">📄</span>
+                <span class="label">Blockchain CV</span>
+            </a>
+            <a href="viewConfirmation.html" class="nav-item">
+                <span class="icon">🔍</span>
+                <span class="label">Scan</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">👤</span>
+                <span class="label">Account</span>
+            </a>
+            <a href="login.html" class="nav-item">
+                <span class="icon">⚙️</span>
+                <span class="label">Log Out</span>
+            </a>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <script src="../js/contract.js"></script>
+    <script src="../js/bcFunction.js"></script>
     <script>
-       
+        // Check registration when the page loads
+        window.onload = checkRegistration;
     </script>
 </body>
 </html>

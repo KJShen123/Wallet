@@ -1,5 +1,7 @@
 const express = require('express');
-const { loginUser } = require('./function');  // Import the loginUser function
+const sql = require('mssql');
+const dbConfig = require('./dbconfig');
+const { loginUser } = require('./function'); 
 const router = express.Router();  // Use Router to define the routes
 
 // POST /js/function - Login route
@@ -30,5 +32,42 @@ router.get('/session-check', (req, res) => {
     }
 });
 
+// Route to fetch user data based on session's AccountID
+router.get('/getUserData', async (req, res) => {
+    try {
+        // Ensure the user is logged in
+        if (!req.session || !req.session.accountID) {
+            return res.status(401).json({ error: "User not logged in" });
+        }
+
+        let pool = await sql.connect(dbConfig);
+        const accountID = req.session.accountID;
+
+        // Create a request object
+        const request = pool.request();
+
+        // Bind parameters for SQL query
+        request.input('accountID', sql.Int, accountID);
+
+        // Fetch data from multiple tables with named parameters
+        const user = await request.query("SELECT * FROM Profile WHERE AccountID = @accountID");
+        const certifications = await request.query("SELECT * FROM Certification WHERE AccountID = @accountID");
+        const educations = await request.query("SELECT * FROM Education WHERE AccountID = @accountID");
+        const softSkills = await request.query("SELECT * FROM SoftSkill WHERE AccountID = @accountID");
+        const works = await request.query("SELECT * FROM Work WHERE AccountID = @accountID");
+
+        // Return all data
+        res.json({ 
+            user: user.recordset, 
+            certifications: certifications.recordset, 
+            educations: educations.recordset, 
+            softSkills: softSkills.recordset, 
+            works: works.recordset 
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Error fetching data" });
+    }
+});
 
 module.exports = router;

@@ -19,11 +19,30 @@
             <div class="content">
                 <h3>Your Credential on Saino365</h3>
                 <div class="question-box">
-                    <div class="question-text">Credentials name</div>
-                    <div class="question-text">123</div>
-                    <div class="question-text">321</div>
+                    <div id="user">
+                        <h4>User Info</h4>
+                        <!-- Dynamic certification data will be inserted here -->
+                    </div>
+
+                    <div id="certifications">
+                        <h4>Certifications</h4>
+                        <!-- Dynamic certification data will be inserted here -->
+                    </div>
                     
+                    <div id="educations">
+                        <h4>Educations</h4>
+                        <!-- Dynamic education data will be inserted here -->
+                    </div>
                     
+                    <div id="softSkills">
+                        <h4>Soft Skills</h4>
+                        <!-- Dynamic soft skill data will be inserted here -->
+                    </div>
+                    
+                    <div id="works">
+                        <h4>Work Experiences</h4>
+                        <!-- Dynamic work data will be inserted here -->
+                    </div>
                 </div>
                 <div class="bottom-buttons">
                   
@@ -50,9 +69,12 @@
                 </a>
             </div>
         </div>
-    <script src="https://cdn.jsdelivr.net/npm/ethers/dist/ethers.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <script src="../js/serverFunction.js"></script>
     <script>
-       
+        // Fetch data when the page loads
+        window.onload = fetchUserData;
     </script>
 </body>
 </html>
