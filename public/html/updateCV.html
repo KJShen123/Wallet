@@ -17,6 +17,16 @@
                 <span></span>
             </div>
             <div class="content">
+
+                <div id="differences" style="margin-top: 20px;">
+                    <h4>Differences with Blockchain</h4>
+                    <div id="workDifferences"></div>
+                    <div id="softSkillsDifferences"></div>
+                    <div id="educationDifferences"></div>
+                    <div id="certificationDifferences"></div>
+                    <div id="status"></div> 
+                </div>
+
                 <h3>Your Credential on Saino365</h3>
                 <div class="question-box">
                     <div id="user">
@@ -71,10 +81,17 @@
         </div>
 
     <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <script src="../js/contract.js"></script>
     <script src="../js/serverFunction.js"></script>
     <script>
         // Fetch data when the page loads
-        window.onload = fetchUserData;
+        window.onload = initializePage;
+
+        function initializePage() {
+            fetchUserData();
+            compareAndShowDifferences();
+        }
+
     </script>
 </body>
 </html>

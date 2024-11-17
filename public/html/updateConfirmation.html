@@ -7,43 +7,74 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet">
     <link href="../css/wallet.css" rel="stylesheet" id="style-css">
 </head>
+
+
 <body>
-    <div class="container">
-        <div class="header">
-            <i class="bi bi-arrow-left back-icon"></i>
-            <span>Scan</span>
-            <span></span>
-        </div>
-        <div class="content">
-            <div class="question-box">
-                <div class="question-text">Do you sure you want to upload your CV to blockchain?</div>
-                
-                <div class="buttons">
-                    <button class="button" onclick="fetchAndPrepareData()">Yes</button>
-                    <button class="button" onclick="window.location.href='viewCV.html'">No</button>
-                </div>
+    <header class="header">
+        <i class="bi bi-arrow-left back-icon"></i>
+        <span>Scan</span>
+    </header>
+    <main class="content">
+        <div class="question-box">
+            <div class="question-text">Are you sure you want to upload your CV to the blockchain?</div>
+            <div class="buttons">
+                <button class="button" id="uploadButton" onclick="startUpload()">Yes</button>
+                <button class="button" onclick="window.location.href='viewCV.html'">No</button>
             </div>
         </div>
-        <div class="navbar">
-            <a href="viewCV.html" class="nav-item">
-                <span class="icon">📄</span>
-                <span class="label">Blockchain CV</span>
-            </a>
-            <a href="viewConfirmation.html" class="nav-item">
-                <span class="icon">🔍</span>
-                <span class="label">Scan</span>
-            </a>
-            <a href="#" class="nav-item">
-                <span class="icon">👤</span>
-                <span class="label">Account</span>
-            </a>
-            <a href="login.html" class="nav-item">
-                <span class="icon">⚙️</span>
-                <span class="label">log out</span>
-            </a>
-        </div>
-    </div>
+        <div id="loading" style="display:none;">Uploading your CV to blockchain...</div>
+    </main>
+    <nav class="navbar">
+        <a href="viewCV.html" class="nav-item">
+            <span class="icon">📄</span>
+            <span class="label">Blockchain CV</span>
+        </a>
+        <a href="viewConfirmation.html" class="nav-item">
+            <span class="icon">🔍</span>
+            <span class="label">Scan</span>
+        </a>
+        <a href="#" class="nav-item">
+            <span class="icon">👤</span>
+            <span class="label">Account</span>
+        </a>
+        <a href="login.html" class="nav-item">
+            <span class="icon">⚙️</span>
+            <span class="label">Log out</span>
+        </a>
+    </nav>
 
-    <script src="../js/bcFunction.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <script src="../js/contract.js"></script>
+    <script src="../js/bcFunction.js" defer></script>
+    <script>
+        function startUpload() {
+            const button = document.getElementById('uploadButton');
+            const loadingIndicator = document.getElementById('loading');
+
+            button.disabled = true;
+            loadingIndicator.style.display = 'block';
+
+            // Check the registered status in sessionStorage
+            const isRegistered = sessionStorage.getItem('registered') === 'true';
+
+            // Use the appropriate function based on the registered status
+            const uploadFunction = isRegistered ? uploadNewData : fetchAndPrepareData;
+
+            uploadFunction()
+                .then(() => {
+                    console.log("Upload process completed successfully.");
+                    // Redirect to the success page
+                    window.location.href = "updateSuccessful.html";
+                })
+                .catch((err) => {
+                    console.error("Error during upload process:", err);
+                    alert("An error occurred during the upload process. Please try again.");
+                })
+                .finally(() => {
+                    button.disabled = false;
+                    loadingIndicator.style.display = 'none';
+                });
+        }
+    </script>
 </body>
 </html>

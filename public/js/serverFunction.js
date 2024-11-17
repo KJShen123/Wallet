@@ -93,3 +93,251 @@ async function fetchUserData() {
         console.error("Error fetching user data:", err);
     }
 }
+
+
+async function compareAndShowDifferences() {
+    try {
+        // Fetch data from the backend (database)
+        const response = await fetch('/getUserData');
+        if (!response.ok) {
+            throw new Error("Failed to fetch data from the server");
+        }
+        const data = await response.json();
+
+        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+        const userAddress = accounts[0];
+
+        // Fetch data from the smart contract (blockchain)
+        const [walletHolders, softSkills, works, educations, certifications] = await window.CVUploaderContract.viewAllCredentials(userAddress);
+
+        // Function to map backend data to a comparable format
+        function mapBackendData(data, type) {
+            switch(type) {
+                case 'workExperiences':
+                    return data.map(work => ({
+                        workExpID: work.WorkExpID.toString(),
+                        title: work.WorkTitle,
+                        company: work.WorkCompany,
+                        industry: work.WorkIndustry,
+                        country: work.WorkCountry,
+                        state: work.WorkState,
+                        city: work.WorkCity,
+                        description: work.WorkDescription,
+                        startDate: work.WorkStartDate,
+                        endDate: work.WorkEndDate
+                    }));
+
+                case 'softSkills':
+                    return data.map(skill => ({
+                        softID: skill.SoftID.toString(),
+                        highlight: skill.SoftHighlight,
+                        description: skill.SoftDescription,
+                        level: skill.SoftLevel
+                    }));
+                
+                case 'educations':
+                    return data.map(edu => ({
+                        eduBadID: edu.EduBacID.toString(),
+                        level: edu.LevelEdu,
+                        fieldOfStudy: edu.FieldOfStudy,
+                        instituteName: edu.InstituteName,
+                        instituteCountry: edu.InstituteCountry,
+                        instituteState: edu.InstituteState,
+                        instituteCity: edu.InstituteCity,
+                        startDate: edu.EduStartDate,
+                        endDate: edu.EduEndDate
+                    }));
+
+                case 'certifications':
+                    return data.map(cert => ({
+                        certID: cert.CerID.toString(),
+                        name: cert.CerName,
+                        email: cert.CerEmail,
+                        certType: cert.CerType,
+                        issuer: cert.CerIssuer,
+                        description: cert.CerDescription,
+                        acquiredDate: cert.CerAcquiredDate,
+                        active: cert.Active
+                    }));
+
+                default:
+                    return [];
+            }
+        }
+
+        // Function to map contract data to a comparable format
+        function mapContractData(data, type) {
+            switch(type) {
+                case 'workExperiences':
+                    return data.map(work => ({
+                        workExpID: work.workExpID.toString(),
+                        title: work.title,
+                        company: work.company,
+                        industry: work.industry,
+                        country: work.country,
+                        state: work.state,
+                        city: work.city,
+                        description: work.description,
+                        startDate: work.startDate,
+                        endDate: work.endDate
+                    }));
+
+                case 'softSkills':
+                    return data.map(skill => ({
+                        softID: skill.softID.toString(),
+                        highlight: skill.highlight,
+                        description: skill.description,
+                        level: skill.level
+                    }));
+                
+                case 'educations':
+                    return data.map(edu => ({
+                        eduBadID: edu.eduBadID.toString(),
+                        level: edu.level,
+                        fieldOfStudy: edu.fieldOfStudy,
+                        instituteName: edu.instituteName,
+                        instituteCountry: edu.instituteCountry,
+                        instituteState: edu.instituteState,
+                        instituteCity: edu.instituteCity,
+                        startDate: edu.startDate,
+                        endDate: edu.endDate
+                    }));
+    
+                case 'certifications':
+                    return data.map(cert => ({
+                        certID: cert.certID.toString(),
+                        name: cert.name,
+                        email: cert.email,
+                        certType: cert.certType,
+                        issuer: cert.issuer,
+                        description: cert.description,
+                        acquiredDate: cert.acquiredDate,
+                        active: cert.active
+                    }));
+
+                default:
+                    return [];
+            }
+        }
+
+        // Function to compare two data sets and find missing or different items
+        function compareData(dbData, contractData, key) {
+            const differences = [];
+        
+            // Iterate over the backend data
+            dbData.forEach(dbItem => {
+                const contractItem = contractData.find(item => item[key] === dbItem[key]);
+        
+                if (!contractItem) {
+                    // If item does not exist in the contract data, mark it as missing
+                    differences.push({ ...dbItem, status: 'Pending Upload For' });
+                } else {
+                    // Compare fields one by one
+                    const fields = Object.keys(dbItem);
+                    let isDifferent = false;
+        
+                    fields.forEach(field => {
+                        if (dbItem[field] !== contractItem[field]) {
+                            isDifferent = true;
+                        }
+                    });
+        
+                    if (isDifferent) {
+                        // If any field is different, mark it as different
+                        differences.push({ ...dbItem, status: 'Different in Contract' });
+                    }
+                }
+            });
+        
+            return differences;
+        }        
+
+        // Function to create a display div for differences
+        function createDifferenceDisplay(diff, type) {
+            const diffDiv = document.createElement('div');
+            diffDiv.className = 'question-text';
+            let content = `<strong>${diff.status} ${type}:</strong><br>`;
+
+            // Display each property based on type
+            for (const [key, value] of Object.entries(diff)) {
+                if (key !== 'status') {
+                    content += `${key.charAt(0).toUpperCase() + key.slice(1)}: ${value || 'N/A'}<br>`;
+                }
+            }
+
+            diffDiv.innerHTML = content;
+            return diffDiv;
+        }
+
+        // Compare work experiences
+        const mappedBackendWorks = mapBackendData(data.works, 'workExperiences');
+        const mappedContractWorks = mapContractData(works, 'workExperiences');
+        const workDifferences = compareData(mappedBackendWorks, mappedContractWorks, 'workExpID');
+
+        // Display differences for work experiences
+        const workContainer = document.getElementById('workDifferences');
+        workDifferences.forEach(diff => {
+            workContainer.appendChild(createDifferenceDisplay(diff, 'Work Experience Field'));
+        });
+
+        // Compare soft skills
+        const mappedBackendSkills = mapBackendData(data.softSkills, 'softSkills');
+        const mappedContractSkills = mapContractData(softSkills, 'softSkills');
+        const softSkillsDifferences = compareData(mappedBackendSkills, mappedContractSkills, 'softID');
+
+        // Display differences for soft skills
+        const softSkillsContainer = document.getElementById('softSkillsDifferences');
+        softSkillsDifferences.forEach(diff => {
+            softSkillsContainer.appendChild(createDifferenceDisplay(diff, 'Soft Skill Field'));
+        });
+
+        // Compare education
+        const mappedBackendEducations = mapBackendData(data.educations, 'educations');
+        const mappedContractEducations = mapContractData(educations, 'educations');
+        const educationDifferences = compareData(mappedBackendEducations, mappedContractEducations, 'eduBadID');
+
+        // Display differences for education
+        const educationContainer = document.getElementById('educationDifferences');
+        educationDifferences.forEach(diff => {
+            educationContainer.appendChild(createDifferenceDisplay(diff, 'Education Field'));
+        });
+
+        // Compare certifications
+        const mappedBackendCertifications = mapBackendData(data.certifications, 'certifications');
+        const mappedContractCertifications = mapContractData(certifications, 'certifications');
+        const certificationDifferences = compareData(mappedBackendCertifications, mappedContractCertifications, 'certID');
+
+        // Display differences for certifications
+        const certificationContainer = document.getElementById('certificationDifferences');
+        certificationDifferences.forEach(diff => {
+            certificationContainer.appendChild(createDifferenceDisplay(diff, 'Certification Field'));
+        });
+
+        const hasWorkDifferences = document.getElementById('workDifferences').children.length > 0;
+        const hasSoftSkillsDifferences = document.getElementById('softSkillsDifferences').children.length > 0;
+        const hasEducationDifferences = document.getElementById('educationDifferences').children.length > 0;
+        const hasCertificationDifferences = document.getElementById('certificationDifferences').children.length > 0;
+
+        // If any section has differences, set `differences` to true
+        const differences = hasWorkDifferences || hasSoftSkillsDifferences || hasEducationDifferences || hasCertificationDifferences;
+
+        toggleDifferencesDisplay(differences);
+
+    } catch (err) {
+        console.error("Error fetching data:", err);
+        document.getElementById('status').innerText = "Error fetching data.";
+    }
+}
+
+function toggleDifferencesDisplay(hasDifferences) {
+    const differencesHeader = document.querySelector('#differences h4'); // Select the <h4> tag
+
+    if (hasDifferences) {
+        // Show the header and update status
+        differencesHeader.style.display = 'block';
+    } else {
+        // Hide the header and update status
+        differencesHeader.style.display = 'none';
+    }
+}
+

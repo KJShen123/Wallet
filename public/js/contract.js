@@ -1,7 +1,7 @@
 
 // Addresses and APIs for the contracts
-const CVUploaderAdd = "0x8DF566E06dD47AE17619295ee3B6674bC9c8730F"; 
-const CVUploaderAPI = [
+const CVUploaderAdd = "0x0f79dC72Ba52dd7454D2f7Ff0024930301E5CbaA"; 
+const CVUploaderABI = [
 	{
 		"anonymous": false,
 		"inputs": [
@@ -14,6 +14,211 @@ const CVUploaderAPI = [
 		],
 		"name": "CVUploaded",
 		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "int256",
+				"name": "certID",
+				"type": "int256"
+			},
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "email",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "certType",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "issuer",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "description",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "acquiredDate",
+				"type": "string"
+			},
+			{
+				"internalType": "bool",
+				"name": "active",
+				"type": "bool"
+			}
+		],
+		"name": "uploadOrUpdateCertification",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "int256",
+				"name": "eduBadID",
+				"type": "int256"
+			},
+			{
+				"internalType": "string",
+				"name": "level",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "fieldOfStudy",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "instituteName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "instituteCountry",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "instituteState",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "instituteCity",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "startDate",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "endDate",
+				"type": "string"
+			}
+		],
+		"name": "uploadOrUpdateEducation",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "int256",
+				"name": "softID",
+				"type": "int256"
+			},
+			{
+				"internalType": "string",
+				"name": "highlight",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "description",
+				"type": "string"
+			},
+			{
+				"internalType": "uint8",
+				"name": "level",
+				"type": "uint8"
+			}
+		],
+		"name": "uploadOrUpdateSoftSkill",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "email",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			}
+		],
+		"name": "uploadOrUpdateWalletHolder",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "int256",
+				"name": "workExpID",
+				"type": "int256"
+			},
+			{
+				"internalType": "string",
+				"name": "title",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "company",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "industry",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "country",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "state",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "city",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "description",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "startDate",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "endDate",
+				"type": "string"
+			}
+		],
+		"name": "uploadOrUpdateWork",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
 	},
 	{
 		"inputs": [
@@ -31,9 +236,9 @@ const CVUploaderAPI = [
 		"name": "certifications",
 		"outputs": [
 			{
-				"internalType": "uint256",
+				"internalType": "int256",
 				"name": "certID",
-				"type": "uint256"
+				"type": "int256"
 			},
 			{
 				"internalType": "address",
@@ -95,9 +300,9 @@ const CVUploaderAPI = [
 		"name": "educations",
 		"outputs": [
 			{
-				"internalType": "uint256",
+				"internalType": "int256",
 				"name": "eduBadID",
-				"type": "uint256"
+				"type": "int256"
 			},
 			{
 				"internalType": "address",
@@ -164,9 +369,9 @@ const CVUploaderAPI = [
 		"name": "softSkills",
 		"outputs": [
 			{
-				"internalType": "uint256",
+				"internalType": "int256",
 				"name": "softID",
-				"type": "uint256"
+				"type": "int256"
 			},
 			{
 				"internalType": "address",
@@ -190,239 +395,6 @@ const CVUploaderAPI = [
 			}
 		],
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"components": [
-					{
-						"internalType": "uint256",
-						"name": "softID",
-						"type": "uint256"
-					},
-					{
-						"internalType": "address",
-						"name": "accountID",
-						"type": "address"
-					},
-					{
-						"internalType": "string",
-						"name": "highlight",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "description",
-						"type": "string"
-					},
-					{
-						"internalType": "uint8",
-						"name": "level",
-						"type": "uint8"
-					}
-				],
-				"internalType": "struct CVUploader.SoftSkill[]",
-				"name": "softSkillRows",
-				"type": "tuple[]"
-			},
-			{
-				"components": [
-					{
-						"internalType": "uint256",
-						"name": "workExpID",
-						"type": "uint256"
-					},
-					{
-						"internalType": "address",
-						"name": "accountID",
-						"type": "address"
-					},
-					{
-						"internalType": "string",
-						"name": "title",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "company",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "industry",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "country",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "state",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "city",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "description",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "startDate",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "endDate",
-						"type": "string"
-					}
-				],
-				"internalType": "struct CVUploader.Work[]",
-				"name": "workRows",
-				"type": "tuple[]"
-			},
-			{
-				"components": [
-					{
-						"internalType": "uint256",
-						"name": "eduBadID",
-						"type": "uint256"
-					},
-					{
-						"internalType": "address",
-						"name": "accountID",
-						"type": "address"
-					},
-					{
-						"internalType": "string",
-						"name": "level",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "fieldOfStudy",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "instituteName",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "instituteCountry",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "instituteState",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "instituteCity",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "startDate",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "endDate",
-						"type": "string"
-					}
-				],
-				"internalType": "struct CVUploader.Education[]",
-				"name": "educationRows",
-				"type": "tuple[]"
-			},
-			{
-				"components": [
-					{
-						"internalType": "uint256",
-						"name": "certID",
-						"type": "uint256"
-					},
-					{
-						"internalType": "address",
-						"name": "accountID",
-						"type": "address"
-					},
-					{
-						"internalType": "string",
-						"name": "name",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "email",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "certType",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "issuer",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "description",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "acquiredDate",
-						"type": "string"
-					},
-					{
-						"internalType": "bool",
-						"name": "active",
-						"type": "bool"
-					}
-				],
-				"internalType": "struct CVUploader.Certification[]",
-				"name": "certificationRows",
-				"type": "tuple[]"
-			},
-			{
-				"components": [
-					{
-						"internalType": "address",
-						"name": "accountID",
-						"type": "address"
-					},
-					{
-						"internalType": "string",
-						"name": "email",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "name",
-						"type": "string"
-					}
-				],
-				"internalType": "struct CVUploader.WalletHolder[]",
-				"name": "walletHolderRows",
-				"type": "tuple[]"
-			}
-		],
-		"name": "uploadAllData",
-		"outputs": [],
-		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -460,9 +432,9 @@ const CVUploaderAPI = [
 			{
 				"components": [
 					{
-						"internalType": "uint256",
+						"internalType": "int256",
 						"name": "softID",
-						"type": "uint256"
+						"type": "int256"
 					},
 					{
 						"internalType": "address",
@@ -492,9 +464,9 @@ const CVUploaderAPI = [
 			{
 				"components": [
 					{
-						"internalType": "uint256",
+						"internalType": "int256",
 						"name": "workExpID",
-						"type": "uint256"
+						"type": "int256"
 					},
 					{
 						"internalType": "address",
@@ -554,9 +526,9 @@ const CVUploaderAPI = [
 			{
 				"components": [
 					{
-						"internalType": "uint256",
+						"internalType": "int256",
 						"name": "eduBadID",
-						"type": "uint256"
+						"type": "int256"
 					},
 					{
 						"internalType": "address",
@@ -611,9 +583,9 @@ const CVUploaderAPI = [
 			{
 				"components": [
 					{
-						"internalType": "uint256",
+						"internalType": "int256",
 						"name": "certID",
-						"type": "uint256"
+						"type": "int256"
 					},
 					{
 						"internalType": "address",
@@ -657,6 +629,42 @@ const CVUploaderAPI = [
 					}
 				],
 				"internalType": "struct CVUploader.Certification[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "walletHolder",
+				"type": "address"
+			}
+		],
+		"name": "viewWalletHolders",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "address",
+						"name": "accountID",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "email",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					}
+				],
+				"internalType": "struct CVUploader.WalletHolder[]",
 				"name": "",
 				"type": "tuple[]"
 			}
@@ -714,9 +722,9 @@ const CVUploaderAPI = [
 		"name": "works",
 		"outputs": [
 			{
-				"internalType": "uint256",
+				"internalType": "int256",
 				"name": "workExpID",
-				"type": "uint256"
+				"type": "int256"
 			},
 			{
 				"internalType": "address",
@@ -774,8 +782,26 @@ const CVUploaderAPI = [
 	}
 ];
 
-const SubscripRequestAdd = "0xBE1E8791c9C3d834004B653Fe802a996b8af830C";
-const SubscripRequestAPI = [
+const SubscripRequestAdd = "0x375B98ffC5D71d19F90b6BCF3D697f6cf77C188c";
+const SubscripRequestABI = [
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "walletHolder",
+				"type": "address"
+			},
+			{
+				"internalType": "enum SubscripRequest.SegmentType",
+				"name": "segmentType",
+				"type": "uint8"
+			}
+		],
+		"name": "createViewRequest",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
 	{
 		"inputs": [],
 		"stateMutability": "nonpayable",
@@ -806,6 +832,49 @@ const SubscripRequestAPI = [
 		],
 		"name": "ETHWithdrawn",
 		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "enum SubscripRequest.SubscriptionType",
+				"name": "subscriptionType",
+				"type": "uint8"
+			}
+		],
+		"name": "registerAndPurchaseSubscription",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "walletHolder",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "requestIndex",
+				"type": "uint256"
+			},
+			{
+				"internalType": "enum SubscripRequest.RequestStatus",
+				"name": "response",
+				"type": "uint8"
+			}
+		],
+		"name": "respondToRequest",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "storeETH",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
 	},
 	{
 		"anonymous": false,
@@ -872,17 +941,12 @@ const SubscripRequestAPI = [
 	{
 		"inputs": [
 			{
-				"internalType": "address",
-				"name": "walletHolder",
-				"type": "address"
-			},
-			{
-				"internalType": "enum SubscripRequest.SegmentType",
-				"name": "segmentType",
-				"type": "uint8"
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
 			}
 		],
-		"name": "createViewRequest",
+		"name": "withdrawETH",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -932,49 +996,6 @@ const SubscripRequestAPI = [
 			}
 		],
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "enum SubscripRequest.SubscriptionType",
-				"name": "subscriptionType",
-				"type": "uint8"
-			}
-		],
-		"name": "registerAndPurchaseSubscription",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "walletHolder",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "requestIndex",
-				"type": "uint256"
-			},
-			{
-				"internalType": "enum SubscripRequest.RequestStatus",
-				"name": "response",
-				"type": "uint8"
-			}
-		],
-		"name": "respondToRequest",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "storeETH",
-		"outputs": [],
-		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -1033,19 +1054,6 @@ const SubscripRequestAPI = [
 		],
 		"stateMutability": "view",
 		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "withdrawETH",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
 	}
 ];
 
@@ -1053,8 +1061,8 @@ const SubscripRequestAPI = [
 const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
 
 // Create contract instances
-const CVUploaderContract = new ethers.Contract(CVUploaderAdd, CVUploaderAPI, provider);
-const SubscripRequestContract = new ethers.Contract(SubscripRequestAdd, SubscripRequestAPI, provider);
+const CVUploaderContract = new ethers.Contract(CVUploaderAdd, CVUploaderABI, provider);
+const SubscripRequestContract = new ethers.Contract(SubscripRequestAdd, SubscripRequestABI, provider);
 
 // Make contracts globally accessible so other scripts can use them
 window.CVUploaderContract = CVUploaderContract;

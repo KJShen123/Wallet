@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Share CV</title>
+    <title>View Confirmation</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet">
     <link href="../css/wallet.css" rel="stylesheet" id="style-css">
 </head>
@@ -16,18 +16,10 @@
         </div>
         <div class="content">
             <div class="question-box">
-                <div class="question-text">Do you want to share your CV to recruiter A?</div>
-                <div class="requested-info">
-                    <strong>Requested information:</strong>
-                    <ul>
-                        <li>Hobby</li>
-                        <li>Academic</li>
-                        <li>Work experience</li>
-                    </ul>
-                </div>
+                <div class="question-text" id="confirmationMessage"></div>
                 <div class="buttons">
-                    <button class="button">Yes</button>
-                    <button class="button">No</button>
+                    <button id="acceptButton" class="button">Accept</button>
+                    <button id="rejectButton" class="button">Reject</button>
                 </div>
             </div>
         </div>
@@ -36,19 +28,51 @@
                 <span class="icon">📄</span>
                 <span class="label">Blockchain CV</span>
             </a>
-            <a href="viewConfirmation.html" class="nav-item">
+            <a href="viewRquest.html" class="nav-item">
                 <span class="icon">🔍</span>
                 <span class="label">Scan</span>
             </a>
-            <a href="#" class="nav-item">
+            <a href="shareQRCode.html" class="nav-item">
                 <span class="icon">👤</span>
                 <span class="label">Account</span>
             </a>
             <a href="login.html" class="nav-item">
                 <span class="icon">⚙️</span>
-                <span class="label">log out</span>
+                <span class="label">Log Out</span>
             </a>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <script src="../js/contract.js"></script>
+    <script src="../js/bcFunction.js"></script>
+
+    <script>
+        window.onload = async function() {
+            const requestAction = sessionStorage.getItem('requestAction');
+            const requestIndex = sessionStorage.getItem('requestIndex');
+            const recruiter = sessionStorage.getItem('recruiter');
+            const segmentType = sessionStorage.getItem('segmentType');
+
+            // Set the confirmation message based on the action
+            const confirmationMessage = document.getElementById('confirmationMessage');
+            confirmationMessage.innerHTML = `Do you want to ${requestAction} the request from: <br> 
+            Recruiter : ${recruiter} <br>
+            For Segment Type: ${segmentType}?`;
+
+            const acceptButton = document.getElementById('acceptButton');
+            const rejectButton = document.getElementById('rejectButton');
+
+            acceptButton.onclick = async function() {
+                // Call the respondToRequest function with 'Accepted'
+                await handleResponse(requestIndex, 'Accepted');
+            };
+
+            rejectButton.onclick = async function() {
+                // Call the respondToRequest function with 'Rejected'
+                await handleResponse(requestIndex, 'Rejected');
+            };
+        };
+    </script>
 </body>
 </html>

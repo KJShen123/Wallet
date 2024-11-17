@@ -23,7 +23,7 @@ router.post('/js/function', async (req, res) => {
 router.get('/session-check', (req, res) => {
     if (req.session.accountID) {
         // If session exists, user is authenticated
-        console.log("User ID from session: ", req.session.accountID); // Print the ID to the console
+        console.log("User ID from session: ", req.session.accountID); 
         res.json({ success: true });
     } else {
         // If session does not exist, user is not authenticated
