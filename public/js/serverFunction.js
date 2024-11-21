@@ -39,7 +39,7 @@ async function fetchUserData() {
                 <strong>Issuer:</strong> ${cert.CerIssuer} <br>
                 <strong>Description:</strong> ${cert.CerDescription} <br>
                 <strong>Acquired Date:</strong> ${formattedDate} <br> 
-                <strong>Active:</strong> ${cert.Active ? "Yes" : "No"}`;
+                <strong>Active:</strong> ${cert.Active ? "Yes" : "No"} <hr>`;
             certContainer.appendChild(certDiv);
         });
 
@@ -56,7 +56,7 @@ async function fetchUserData() {
                 <strong>Institute State:</strong> ${edu.InstituteState} <br>
                 <strong>Institute City:</strong> ${edu.InstituteCity} <br>
                 <strong>Start Date:</strong> ${edu.EduStartDate} <br>
-                <strong>End Date:</strong> ${edu.EduEndDate}`;
+                <strong>End Date:</strong> ${edu.EduEndDate} <hr>`;
             eduContainer.appendChild(eduDiv);
         });
 
@@ -86,7 +86,7 @@ async function fetchUserData() {
                 <strong>City:</strong> ${work.WorkCity} <br> 
                 <strong>Description:</strong> ${work.WorkDescription} <br> 
                 <strong>Start Date:</strong> ${work.WorkStartDate} <br> 
-                <strong>End Date:</strong> ${work.WorkEndDate}`;
+                <strong>End Date:</strong> ${work.WorkEndDate} <hr>`;
             workContainer.appendChild(workDiv);
         });
     } catch (err) {
@@ -205,6 +205,7 @@ async function compareAndShowDifferences() {
     
                 case 'certifications':
                     return data.map(cert => ({
+                         
                         certID: cert.certID.toString(),
                         name: cert.name,
                         email: cert.email,
@@ -255,8 +256,8 @@ async function compareAndShowDifferences() {
         // Function to create a display div for differences
         function createDifferenceDisplay(diff, type) {
             const diffDiv = document.createElement('div');
-            diffDiv.className = 'question-text';
-            let content = `<strong>${diff.status} ${type}:</strong><br>`;
+            diffDiv.className = 'info-card';
+            let content = `<strong style="color:blue;">${diff.status} ${type}:</strong><br>`;
 
             // Display each property based on type
             for (const [key, value] of Object.entries(diff)) {

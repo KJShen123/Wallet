@@ -86,6 +86,8 @@ async function fetchUserCredentials(userAddress) {
             // Display on the page
             const walletDiv = document.createElement('div');
             walletDiv.innerHTML = `
+            <div class="info-card">
+                <div class="info-info">
                 <strong>Wallet Holder:</strong><br>
                 Email: ${walletHolder.email}<br>
                 Name: ${walletHolder.name}
@@ -100,6 +102,8 @@ async function fetchUserCredentials(userAddress) {
             // Display on the page
             const skillDiv = document.createElement('div');
             skillDiv.innerHTML = `
+                <div class="info-card">
+                <div class="info-info">
                 <strong>Soft Skill:</strong><br>
                 Highlight: ${skill.highlight}<br>
                 Description: ${skill.description}<br>
@@ -115,6 +119,8 @@ async function fetchUserCredentials(userAddress) {
             // Display on the page
             const workDiv = document.createElement('div');
             workDiv.innerHTML = `
+                <div class="info-card">
+                <div class="info-info">
                 <strong>Work Experience:</strong><br>
                 Title: ${work.title}<br>
                 Company: ${work.company}<br>
@@ -136,6 +142,8 @@ async function fetchUserCredentials(userAddress) {
             // Display on the page
             const educationDiv = document.createElement('div');
             educationDiv.innerHTML = `
+                <div class="info-card">
+                <div class="info-info">
                 <strong>Education:</strong><br>
                 Level: ${education.level}<br>
                 Field of Study: ${education.fieldOfStudy}<br>
@@ -156,6 +164,8 @@ async function fetchUserCredentials(userAddress) {
             // Display on the page
             const certDiv = document.createElement('div');
             certDiv.innerHTML = `
+                <div class="info-card">
+                <div class="info-info">
                 <strong>Certification:</strong><br>
                 Name: ${cert.name}<br>
                 Email: ${cert.email}<br>
@@ -621,10 +631,19 @@ async function getViewRequests() {
             const requestElement = document.createElement('div');
             requestElement.classList.add('request-info');
             requestElement.innerHTML = `
-                <h5>Request #${10 + requestIndex} Details:</h5>  <!-- Add 1 to index -->
+     
+            <div class="plan-card"  style="margin-top:20px;">
+                <div class="plan-info">
+                      <h5>Request #${10 + requestIndex} Details:</h5>  <!-- Add 1 to index -->
                 <p><strong>Requested by Recruiter:</strong> ${recruiter}</p>
                 <p><strong>Segment:</strong> ${SegmentType[segmentType]}</p>
                 <p><strong>Status:</strong> ${RequestStatus[status]}</p>
+                </div>
+            </div>
+           
+           
+  
+              
             `;
 
             // Only add the "Response" button if the status is Pending (status === 0)

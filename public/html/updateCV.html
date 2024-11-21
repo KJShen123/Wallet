@@ -1,84 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Link Metamask Page</title>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
-    <link href="../css/wallet.css" rel="stylesheet" id="style-css">
-   
+    <link href="../css/styles1.css" rel="stylesheet" id="style-css">
+
 </head>
+
 <body>
-        <div class="container">
-            <div class="header">
-                <i class="bi bi-arrow-left back-icon"></i>
-                <span>Scan</span>
-                <span></span>
-            </div>
-            <div class="content">
+    <nav class="top-nav">
+        <div class="logo">
+            <h4>Saino Recruiter</h4>
+        </div>
 
-                <div id="differences" style="margin-top: 20px;">
-                    <h4>Differences with Blockchain</h4>
-                    <div id="workDifferences"></div>
-                    <div id="softSkillsDifferences"></div>
-                    <div id="educationDifferences"></div>
-                    <div id="certificationDifferences"></div>
-                    <div id="status"></div> 
+        <div>
+            <button class="logout-btn" onclick="window.location.href = 'logout.html'">Logout</button>
+        </div>
+
+    </nav>
+
+
+    </nav>
+
+    <!-- Delivery and Date Options (Positioned differently for mobile and desktop) -->
+    <div class="delivery-options">
+        <button class="delivery-btn" onclick="window.location.href = 'viewCV.html'">BlockChain CV</button>
+        <button class="delivery-btn" onclick="window.location.href = 'viewRquest.html'">CV request</button>
+        <button class="delivery-btn" onclick="window.location.href = 'shareQRCode.html'">QR Code</button>
+
+    </div>
+    <main class="main-content" style="margin-bottom: 50px;">
+
+        <div class="info-list" id="differences" style="margin-top: 20px;">
+            <h4>Differences with Blockchain</h4>
+            <div id="workDifferences"></div>
+            <div id="softSkillsDifferences"></div>
+            <div id="educationDifferences"></div>
+            <div id="certificationDifferences"></div>
+            <div id="status"></div>
+        </div>
+
+
+
+        <div class="info-list" id="infoList">
+            <h3 style="color: #007bff;">Your Current Credential on Saino365</h3>
+
+            <div class="info-card">
+                <div id="user">
+                    <h4 style="color:#007bff">User Info</h4>
+                    <!-- Dynamic certification data will be inserted here -->
                 </div>
 
-                <h3>Your Credential on Saino365</h3>
-                <div class="question-box">
-                    <div id="user">
-                        <h4>User Info</h4>
-                        <!-- Dynamic certification data will be inserted here -->
-                    </div>
-
-                    <div id="certifications">
-                        <h4>Certifications</h4>
-                        <!-- Dynamic certification data will be inserted here -->
-                    </div>
-                    
-                    <div id="educations">
-                        <h4>Educations</h4>
-                        <!-- Dynamic education data will be inserted here -->
-                    </div>
-                    
-                    <div id="softSkills">
-                        <h4>Soft Skills</h4>
-                        <!-- Dynamic soft skill data will be inserted here -->
-                    </div>
-                    
-                    <div id="works">
-                        <h4>Work Experiences</h4>
-                        <!-- Dynamic work data will be inserted here -->
-                    </div>
+                <div id="certifications" style="margin-top: 20px;">
+                    <h4 style="color:#007bff">Certifications</h4>
+                    <!-- Dynamic certification data will be inserted here -->
                 </div>
-                <div class="bottom-buttons">
-                  
-                    <button class="button" onclick="window.location.href='updateConfirmation.html'">Upload to blockchain</button>
 
-                    </div>
+                <div id="educations" style="margin-top: 20px;">
+                    <h4 style="color:#007bff">Educations</h4>
+                    <!-- Dynamic education data will be inserted here -->
+                </div>
+
+                <div id="softSkills" style="margin-top: 20px;">
+                    <h4 style="color:#007bff">Soft Skills</h4>
+                    <!-- Dynamic soft skill data will be inserted here -->
+                </div>
+
+                <div id="works" style="margin-top: 20px;">
+                    <h4 style="color:#007bff">Work Experiences</h4>
+                    <!-- Dynamic work data will be inserted here -->
+                </div>
             </div>
-            <div class="navbar">
-                <a href="viewCV.html" class="nav-item">
-                    <span class="icon">📄</span>
-                    <span class="label">Blockchain CV</span>
-                </a>
-                <a href="viewConfirmation.html" class="nav-item">
-                    <span class="icon">🔍</span>
-                    <span class="label">Scan</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <span class="icon">👤</span>
-                    <span class="label">Account</span>
-                </a>
-                <a href="login.html" class="nav-item">
-                    <span class="icon">⚙️</span>
-                    <span class="label">log out</span>
-                </a>
+
+            <div class="update-buttons">
+                <button class="button" onclick="window.location.href='updateConfirmation.html'">Update Blockchain CV</button>
             </div>
         </div>
+        </div>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
     <script src="../js/contract.js"></script>
@@ -94,4 +97,5 @@
 
     </script>
 </body>
+
 </html>
