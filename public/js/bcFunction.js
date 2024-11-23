@@ -95,22 +95,6 @@ async function fetchUserCredentials(userAddress) {
             document.getElementById('credentials').appendChild(walletDiv);
         });
 
-        // Loop through softSkills and display them
-        console.log("Soft Skills:");
-        softSkills.forEach(skill => {
-            console.log(skill);  // Log softSkill details
-            // Display on the page
-            const skillDiv = document.createElement('div');
-            skillDiv.innerHTML = `
-                <div class="info-card">
-                <div class="info-info">
-                <strong>Soft Skill:</strong><br>
-                Highlight: ${skill.highlight}<br>
-                Description: ${skill.description}<br>
-                Level: ${skill.level}
-            `;
-            document.getElementById('credentials').appendChild(skillDiv);
-        });
 
         // Create a shallow copy and sort works by endDate in descending order
         const sortedWorks = [...works].sort((a, b) => new Date(b.endDate) - new Date(a.endDate));
@@ -184,6 +168,24 @@ async function fetchUserCredentials(userAddress) {
             document.getElementById('credentials').appendChild(certDiv);
         });
         
+        
+        // Loop through softSkills and display them
+        console.log("Soft Skills:");
+        softSkills.forEach(skill => {
+            console.log(skill);  // Log softSkill details
+            // Display on the page
+            const skillDiv = document.createElement('div');
+            skillDiv.innerHTML = `
+                <div class="info-card">
+                <div class="info-info">
+                <strong>Soft Skill:</strong><br>
+                Highlight: ${skill.highlight}<br>
+                Description: ${skill.description}<br>
+                Level: ${skill.level}
+            `;
+            document.getElementById('credentials').appendChild(skillDiv);
+        });
+        
     } catch (err) {
         console.error("Error fetching credentials:", err);
         document.getElementById('status').innerText = "Error fetching credentials.";
@@ -210,13 +212,6 @@ async function fetchAndPrepareData() {
         const userAddress = accounts[0];
 
         // Prepare structured data
-        const softSkillRows = data.softSkills.map(skill => ({
-            softID: skill.SoftID,
-            highlight: skill.SoftHighlight,
-            description: skill.SoftDescription,
-            level: skill.SoftLevel
-        }));
-
         const workRows = data.works.map(work => ({
             workExpID: work.WorkExpID,
             title: work.WorkTitle,
@@ -253,6 +248,14 @@ async function fetchAndPrepareData() {
             active: cert.Active
         }));
 
+        const softSkillRows = data.softSkills.map(skill => ({
+            softID: skill.SoftID,
+            highlight: skill.SoftHighlight,
+            description: skill.SoftDescription,
+            level: skill.SoftLevel
+        }));
+
+
         const walletHolderRows = data.user.map(user => ({
             accountID: userAddress,
             email: user.Email_Address,
@@ -266,11 +269,6 @@ async function fetchAndPrepareData() {
         // Sequentially upload the data
         for (const holder of walletHolderRows) {
             const tx = await CVUploaderWithSigner.populateTransaction.uploadOrUpdateWalletHolder(holder.email, holder.name);
-            await sendSignedTransaction(tx);
-        }
-
-        for (const skill of softSkillRows) {
-            const tx = await CVUploaderWithSigner.populateTransaction.uploadOrUpdateSoftSkill(skill.softID, skill.highlight, skill.description, skill.level);
             await sendSignedTransaction(tx);
         }
 
@@ -319,6 +317,11 @@ async function fetchAndPrepareData() {
             await sendSignedTransaction(tx);
         }
 
+        for (const skill of softSkillRows) {
+            const tx = await CVUploaderWithSigner.populateTransaction.uploadOrUpdateSoftSkill(skill.softID, skill.highlight, skill.description, skill.level);
+            await sendSignedTransaction(tx);
+        }
+
         console.log("All data uploaded successfully!");
 
         // Redirect to the updateSuccessful.html page after all data is uploaded
@@ -359,14 +362,6 @@ async function uploadNewData() {
                         startDate: work.WorkStartDate,
                         endDate: work.WorkEndDate
                     }));
-
-                case 'softSkills':
-                    return data.map(skill => ({
-                        softID: skill.SoftID.toString(),
-                        highlight: skill.SoftHighlight,
-                        description: skill.SoftDescription,
-                        level: skill.SoftLevel
-                    }));
                 
                 case 'educations':
                     return data.map(edu => ({
@@ -393,6 +388,15 @@ async function uploadNewData() {
                         active: cert.Active
                     }));
 
+                    
+                case 'softSkills':
+                    return data.map(skill => ({
+                        softID: skill.SoftID.toString(),
+                        highlight: skill.SoftHighlight,
+                        description: skill.SoftDescription,
+                        level: skill.SoftLevel
+                    }));
+
                 default:
                     return [];
             }
@@ -413,14 +417,6 @@ async function uploadNewData() {
                         description: work.description,
                         startDate: work.startDate,
                         endDate: work.endDate
-                    }));
-
-                case 'softSkills':
-                    return data.map(skill => ({
-                        softID: skill.softID.toString(),
-                        highlight: skill.highlight,
-                        description: skill.description,
-                        level: skill.level
                     }));
                 
                 case 'educations':
@@ -447,6 +443,14 @@ async function uploadNewData() {
                         acquiredDate: cert.acquiredDate,
                         active: cert.active
                     }));
+
+                    case 'softSkills':
+                        return data.map(skill => ({
+                            softID: skill.softID.toString(),
+                            highlight: skill.highlight,
+                            description: skill.description,
+                            level: skill.level
+                        }));
 
                 default:
                     return [];
