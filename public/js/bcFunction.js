@@ -112,9 +112,12 @@ async function fetchUserCredentials(userAddress) {
             document.getElementById('credentials').appendChild(skillDiv);
         });
 
-        // Loop through works and display them
+        // Create a shallow copy and sort works by endDate in descending order
+        const sortedWorks = [...works].sort((a, b) => new Date(b.endDate) - new Date(a.endDate));
+
+        // Loop through sorted works and display them
         console.log("Work Experience:");
-        works.forEach(work => {
+        sortedWorks.forEach(work => {
             console.log(work);  // Log work details
             // Display on the page
             const workDiv = document.createElement('div');
@@ -135,9 +138,12 @@ async function fetchUserCredentials(userAddress) {
             document.getElementById('credentials').appendChild(workDiv);
         });
 
-        // Loop through educations and display them
+        // Create a shallow copy and sort educations by endDate in descending order
+        const sortedEducations = [...educations].sort((a, b) => new Date(b.endDate) - new Date(a.endDate));
+
+        // Loop through sorted educations and display them
         console.log("Education:");
-        educations.forEach(education => {
+        sortedEducations.forEach(education => {
             console.log(education);  // Log education details
             // Display on the page
             const educationDiv = document.createElement('div');
@@ -587,93 +593,121 @@ async function sendSignedTransaction(tx) {
 
 
 async function getViewRequests() {
-    // Assume user address is available in sessionStorage or you can get it from MetaMask
-    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-    const userAddress = accounts[0];
+    try {
+        // Assume user address is available in sessionStorage or you can get it from MetaMask
+        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+        const userAddress = accounts[0];
 
-    // Fetch all view requests for the current user
-    const filter = SubscripRequestContract.filters.ViewRequest(userAddress, null, null, null, null);
-    const events = await SubscripRequestContract.queryFilter(filter);
+        // Fetch all view requests for the current user
+        const filter = SubscripRequestContract.filters.ViewRequest(userAddress, null, null, null, null);
+        const events = await SubscripRequestContract.queryFilter(filter);
 
-    // Create a map to store the latest response for each requestIndex
-    const latestRequests = {};
+        // Create a map to store the latest response for each requestIndex
+        const latestRequests = {};
 
-    // Loop through each event and track the latest response by requestIndex
-    events.forEach(event => {
-        const { walletHolder, recruiter, segmentType, status, requestIndex } = event.args;
+        // Loop through each event and track the latest response by requestIndex
+        for (const event of events) {
+            const { walletHolder, recruiter, segmentType, status, requestIndex } = event.args;
 
-        // Check if we need to update the latest status for the requestIndex
-        if (!latestRequests[requestIndex] || latestRequests[requestIndex].blockNumber < event.blockNumber) {
-            latestRequests[requestIndex] = {
-                walletHolder,
-                recruiter,
-                segmentType,
-                status,
-                requestIndex,
-                blockNumber: event.blockNumber, // store the blockNumber
-            };
-        }
-    });
-
-    // Check if any requests exist and render them
-    const viewRequestContainer = document.getElementById('viewRquest');
-    viewRequestContainer.innerHTML = ''; // Clear any previous content
-
-    if (Object.keys(latestRequests).length > 0) {
-        // Sort requests by blockNumber in descending order
-        const sortedRequests = Object.values(latestRequests).sort((a, b) => b.blockNumber - a.blockNumber);
-
-        // Loop through the sorted requests and display them
-        sortedRequests.forEach(request => {
-            const { walletHolder, recruiter, segmentType, status, requestIndex } = request;
-
-            // Create HTML content for each request
-            const requestElement = document.createElement('div');
-            requestElement.classList.add('request-info');
-            requestElement.innerHTML = `
-     
-            <div class="plan-card"  style="margin-top:20px;">
-                <div class="plan-info">
-                      <h5>Request #${10 + requestIndex} Details:</h5>  <!-- Add 1 to index -->
-                <p><strong>Requested by Recruiter:</strong> ${recruiter}</p>
-                <p><strong>Segment:</strong> ${SegmentType[segmentType]}</p>
-                <p><strong>Status:</strong> ${RequestStatus[status]}</p>
-                </div>
-            </div>
-           
-           
-  
-              
-            `;
-
-            // Only add the "Response" button if the status is Pending (status === 0)
-            if (status === 0) { // Status 0 corresponds to "Pending"
-                const responseButton = document.createElement('button');
-                responseButton.textContent = "Response";
-                responseButton.onclick = () => {
-                    // Redirect to the confirmation page with the request details
-                    sessionStorage.setItem('requestAction', 'response'); // Action will be 'response'
-                    sessionStorage.setItem('requestIndex', requestIndex.toString());
-                    sessionStorage.setItem('recruiter', recruiter);
-                    sessionStorage.setItem('segmentType', SegmentType[segmentType]);
-                    window.location.href = 'viewConfirmation.html';
+            // Check if we need to update the latest status for the requestIndex
+            if (!latestRequests[requestIndex] || latestRequests[requestIndex].blockNumber < event.blockNumber) {
+                latestRequests[requestIndex] = {
+                    walletHolder,
+                    recruiter,
+                    segmentType,
+                    status,
+                    requestIndex,
+                    blockNumber: event.blockNumber, // store the blockNumber
                 };
-
-                // Append the response button to the request element
-                requestElement.appendChild(responseButton);
             }
+        }
 
-            // Append the request details to the container
-            viewRequestContainer.appendChild(requestElement);
-        });
-    } else {
-        // No requests found, display a message
-        const noRequestMessage = document.createElement('div');
-        noRequestMessage.classList.add('no-request-message');
-        noRequestMessage.innerHTML = `<p>No requests received yet.</p>`;
+        // Fetch recruiter details for each unique recruiter address
+        const recruiterDetailsMap = {};
+        for (const request of Object.values(latestRequests)) {
+            const { recruiter } = request;
 
-        // Append the no request message to the container
-        viewRequestContainer.appendChild(noRequestMessage);
+            if (!recruiterDetailsMap[recruiter]) {
+                // Call the smart contract to get recruiter details
+                const recruiterDetails = await SubscripRequestContract.viewRecruiter(recruiter);
+
+                // Store the first recruiter's details (assuming the array is non-empty)
+                if (recruiterDetails.length > 0) {
+                    const { userName, companyName, email } = recruiterDetails[0];
+                    recruiterDetailsMap[recruiter] = { userName, companyName, email };
+                } else {
+                    recruiterDetailsMap[recruiter] = { userName: 'N/A', companyName: 'N/A', email: 'N/A' };
+                }
+            }
+        }
+
+        // Check if any requests exist and render them
+        const viewRequestContainer = document.getElementById('viewRquest');
+        viewRequestContainer.innerHTML = ''; // Clear any previous content
+
+        if (Object.keys(latestRequests).length > 0) {
+            // Sort requests by blockNumber in descending order
+            const sortedRequests = Object.values(latestRequests).sort((a, b) => b.blockNumber - a.blockNumber);
+
+            // Loop through the sorted requests and display them
+            sortedRequests.forEach(request => {
+                const { walletHolder, recruiter, segmentType, status, requestIndex } = request;
+
+                // Get recruiter details from the map
+                const { userName, companyName, email } = recruiterDetailsMap[recruiter];
+
+                // Create HTML content for each request
+                const requestElement = document.createElement('div');
+                requestElement.classList.add('request-info');
+                requestElement.innerHTML = `
+                    <div class="plan-card" style="margin-top:20px;">
+                        <div class="plan-info">
+                            <h5>Request Details:</h5>
+                            <p><strong>Requested by Recruiter:</strong> ${recruiter}</p>
+                            <p><strong>Recruiter Name:</strong> ${userName}</p>
+                            <p><strong>Company Name:</strong> ${companyName}</p>
+                            <p><strong>Email:</strong> ${email}</p>
+                            <p><strong>Segment:</strong> ${SegmentType[segmentType]}</p>
+                            <p><strong>Status:</strong> ${RequestStatus[status]}</p>
+                        </div>
+                    </div>
+                `;
+
+                // Only add the "Response" button if the status is Pending (status === 0)
+                if (status === 0) {
+                    const responseButton = document.createElement('button');
+                    responseButton.textContent = "Response";
+                    responseButton.onclick = () => {
+                        // Redirect to the confirmation page with the request details
+                        sessionStorage.setItem('requestAction', 'response'); // Action will be 'response'
+                        sessionStorage.setItem('requestIndex', requestIndex.toString());
+                        sessionStorage.setItem('recruiter', recruiter);
+                        sessionStorage.setItem('segmentType', SegmentType[segmentType]);
+                        sessionStorage.setItem('email', email);
+                        sessionStorage.setItem('userName', userName);
+                        sessionStorage.setItem('companyName', companyName);
+                        window.location.href = 'viewConfirmation.html';
+                    };
+
+                    // Append the response button to the request element
+                    requestElement.appendChild(responseButton);
+                }
+
+                // Append the request details to the container
+                viewRequestContainer.appendChild(requestElement);
+            });
+        } else {
+            // No requests found, display a message
+            const noRequestMessage = document.createElement('div');
+            noRequestMessage.classList.add('no-request-message');
+            noRequestMessage.innerHTML = `<p>No requests received yet.</p>`;
+
+            // Append the no request message to the container
+            viewRequestContainer.appendChild(noRequestMessage);
+        }
+    } catch (error) {
+        console.error("Error fetching view requests:", error);
+        alert("Failed to fetch view requests. Please try again later.");
     }
 }
 

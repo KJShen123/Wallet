@@ -60,12 +60,22 @@
             const requestIndex = sessionStorage.getItem('requestIndex');
             const recruiter = sessionStorage.getItem('recruiter');
             const segmentType = sessionStorage.getItem('segmentType');
+            const email = sessionStorage.getItem('email');
+            const userName = sessionStorage.getItem('userName');
+            const companyName = sessionStorage.getItem('companyName');
 
             // Set the confirmation message based on the action
             const confirmationMessage = document.getElementById('confirmationMessage');
-            confirmationMessage.innerHTML = `Do you want to ${requestAction} the request from: <br> 
-            Recruiter : ${recruiter} <br>
-            For Segment Type: ${segmentType}?`;
+            confirmationMessage.innerHTML = `
+            Do you want to ${requestAction} the request from: <br> <br>
+            <h3>Request Details:</h3>
+            <p><strong>Requested by Recruiter:</strong> ${recruiter}</p>
+            <p><strong>Recruiter Name:</strong> ${userName}</p>
+            <p><strong>Company Name:</strong> ${companyName}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Segment:</strong> ${segmentType}</p>
+            
+            `;
 
             const acceptButton = document.getElementById('acceptButton');
             const rejectButton = document.getElementById('rejectButton');
