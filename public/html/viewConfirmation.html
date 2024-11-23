@@ -56,7 +56,6 @@
 
     <script>
         window.onload = async function() {
-            const requestAction = sessionStorage.getItem('requestAction');
             const requestIndex = sessionStorage.getItem('requestIndex');
             const recruiter = sessionStorage.getItem('recruiter');
             const segmentType = sessionStorage.getItem('segmentType');
@@ -67,7 +66,7 @@
             // Set the confirmation message based on the action
             const confirmationMessage = document.getElementById('confirmationMessage');
             confirmationMessage.innerHTML = `
-            Do you want to ${requestAction} the request from: <br> <br>
+            Do you want to response the request from: <br> <br>
             <h3>Request Details:</h3>
             <p><strong>Requested by Recruiter:</strong> ${recruiter}</p>
             <p><strong>Recruiter Name:</strong> ${userName}</p>

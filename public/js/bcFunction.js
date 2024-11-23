@@ -683,7 +683,6 @@ async function getViewRequests() {
                     responseButton.textContent = "Response";
                     responseButton.onclick = () => {
                         // Redirect to the confirmation page with the request details
-                        sessionStorage.setItem('requestAction', 'response'); // Action will be 'response'
                         sessionStorage.setItem('requestIndex', requestIndex.toString());
                         sessionStorage.setItem('recruiter', recruiter);
                         sessionStorage.setItem('segmentType', SegmentType[segmentType]);
