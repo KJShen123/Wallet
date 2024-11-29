@@ -87,12 +87,24 @@ async function fetchUserData() {
             skillDiv.innerHTML = `
                 <strong>Soft Skill:</strong> ${skill.SoftHighlight} <br> 
                 <strong>Description:</strong> ${skill.SoftDescription} <br> 
-                <strong>Level:</strong> ${skill.SoftLevel}`;
+                <strong>Level:</strong> ${getLevelText(skill.SoftLevel)}`;
             skillContainer.appendChild(skillDiv);
         });
 
     } catch (err) {
         console.error("Error fetching user data:", err);
+    }
+}
+
+// Function to convert level to text
+function getLevelText(level) {
+    switch (level) {
+        case 1: return 'Beginner';
+        case 2: return 'Intermediate';
+        case 3: return 'Advanced';
+        case 4: return 'Expert';
+        case 5: return 'Master';
+        default: return 'Unknown';
     }
 }
 

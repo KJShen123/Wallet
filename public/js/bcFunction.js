@@ -181,7 +181,7 @@ async function fetchUserCredentials(userAddress) {
                 <strong>Soft Skill:</strong><br>
                 Highlight: ${skill.highlight}<br>
                 Description: ${skill.description}<br>
-                Level: ${skill.level}
+                Level: ${getLevelText(skill.level)}
             `;
             document.getElementById('credentials').appendChild(skillDiv);
         });
@@ -189,6 +189,19 @@ async function fetchUserCredentials(userAddress) {
     } catch (err) {
         console.error("Error fetching credentials:", err);
         document.getElementById('status').innerText = "Error fetching credentials.";
+    }
+}
+
+
+// Function to convert level to text
+function getLevelText(level) {
+    switch (level) {
+        case 1: return 'Beginner';
+        case 2: return 'Intermediate';
+        case 3: return 'Advanced';
+        case 4: return 'Expert';
+        case 5: return 'Master';
+        default: return 'Unknown';
     }
 }
 
