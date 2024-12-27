@@ -1,6 +1,6 @@
 
 // Addresses and APIs for the contracts
-const CVUploaderAdd = "0x7453bC18338A930ed824766D30839BE25d9B740b"; 
+const CVUploaderAdd = "0xbc34838637933859E32885fC3C2b0f86f4CC9302"; 
 const CVUploaderABI = [
 	{
 		"anonymous": false,
@@ -782,7 +782,7 @@ const CVUploaderABI = [
 	}
 ];
 
-const SubscripRequestAdd = "0x7453bC18338A930ed824766D30839BE25d9B740b";
+const SubscripRequestAdd = "0xc472CFB3F0F78126bB5B0A1241fac46896E18831";
 const SubscripRequestABI = [
 	{
 		"inputs": [],
